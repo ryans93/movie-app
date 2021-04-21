@@ -1,0 +1,12 @@
+body {
+    background-color: lightgray;
+}
+
+h1 {
+    text-align:center;
+    color:white
+}
+
+#header {
+    background-image: url("./images/banner.jpg");
+}
