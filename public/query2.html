@@ -16,7 +16,7 @@
         crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
-    <title>Home</title>
+    <title>Query 2</title>
 </head>
 
 <body>
@@ -108,24 +108,46 @@
         $.post("/api/query2", formData).done(function (data) {
             let dataSet = data.data;
             let labels = [];
-            dataSet.forEach((t) => {
+            dataSet[0].forEach((t) => {
                 labels.push(t.x);
             });
             console.log(dataSet);
-            /*$("#submit").hide();
+            $("#submit").hide();
             var ctx = $('#myChart')[0].getContext('2d');
             var myChart = new Chart(ctx, {
                 type: 'line',
                 data: {
                     labels: labels,
                     datasets: [{
-                        label: `AVG Ratings of Movies ${formData.minRunTime} to ${formData.maxRunTime} minutes long`,
-                        data: dataSet,
+                        label: `AVG Ratings of ${formData.actor1}'s Movies Each Year`,
+                        data: dataSet[0],
                         backgroundColor: [
-                            'rgba(255, 99, 132, 0.2)',
+                            'rgba(255, 0, 0, 0.2)',
                         ],
                         borderColor: [
-                            'rgba(255, 99, 132, 1)',
+                            'rgba(255, 0, 0, 1)',
+                        ],
+                        borderWidth: 1
+                    },
+                    {
+                        label: `AVG Ratings of ${formData.actor2}'s Movies Each Year`,
+                        data: dataSet[1],
+                        backgroundColor: [
+                            'rgba(0, 255, 0, 0.2)',
+                        ],
+                        borderColor: [
+                            'rgba(0, 255, 0, 1)',
+                        ],
+                        borderWidth: 1
+                    },
+                    {
+                        label: `AVG Ratings of ${formData.actor2}'s Movies Each Year`,
+                        data: dataSet[2],
+                        backgroundColor: [
+                            'rgba(0, 0, 255, 0.2)',
+                        ],
+                        borderColor: [
+                            'rgba(0, 0, 255, 1)',
                         ],
                         borderWidth: 1
                     }]
@@ -136,19 +158,19 @@
                             display: true,
                             title: {
                                 display: true,
-                                text: 'Average Ratings'
+                                text: 'Years'
                             }
                         },
                         y: {
                             display: true,
                             title: {
                                 display: true,
-                                text: 'Years '
+                                text: 'Average Ratings'
                             }
                         }
                     }
                 }
-            });*/
+            });
         });
     });
 </script>

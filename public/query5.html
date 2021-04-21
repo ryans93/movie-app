@@ -16,7 +16,7 @@
         crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
-    <title>Home</title>
+    <title>Query 5</title>
 </head>
 
 <body>
@@ -67,7 +67,158 @@
         </div>
     </div>
 
+    <div class="row">
+        <div class="col-2"></div>
+        <div class="col-8">
+            <h2>Query Parameters</h2>
+            <form>
+                <div class="mb-3">
+                    <label for="startYear" class="form-label">Start Year</label>
+                    <input type="int" class="form-control" id="startYear">
+                </div>
+                <div class="mb-3">
+                    <label for="endYear" class="form-label">End Year</label>
+                    <input type="int" class="form-control" id="endYear">
+                </div>
+                <div class="mb-3">
+                    <label for="genre1" class="form-label">Genre</label>
+                    <select id="genre1" class="form-select">
+                        <option></option>
+                        <option>Action</option>
+                        <option>Animation</option>
+                        <option>Comedy</option>
+                        <option>Crime</option>
+                        <option>Documentry</option>
+                        <option>Drama</option>
+                        <option>Horror</option>
+                        <option>Romance</option>
+                        <option>Sci-Fi</option>
+                        <option>Thriller</option>
+                    </select>
+                </div>
+                <div class="mb-3">
+                    <label for="genre2" class="form-label">Genre (Optional)</label>
+                    <select id="genre2" class="form-select">
+                        <option></option>
+                        <option>Action</option>
+                        <option>Animation</option>
+                        <option>Comedy</option>
+                        <option>Crime</option>
+                        <option>Documentry</option>
+                        <option>Drama</option>
+                        <option>Horror</option>
+                        <option>Romance</option>
+                        <option>Sci-Fi</option>
+                        <option>Thriller</option>
+                    </select>
+                </div>
+                <div class="mb-3">
+                    <label for="genre3" class="form-label">Genre 3 (Optional)</label>
+                    <select id="genre3" class="form-select">
+                        <option></option>
+                        <option>Action</option>
+                        <option>Animation</option>
+                        <option>Comedy</option>
+                        <option>Crime</option>
+                        <option>Documentry</option>
+                        <option>Drama</option>
+                        <option>Horror</option>
+                        <option>Romance</option>
+                        <option>Sci-Fi</option>
+                        <option>Thriller</option>
+                    </select>
+                </div>
+
+                <button type="button" class="btn btn-primary" id="submit">Submit</button>
+            </form>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-12">
+            <canvas id="myChart"></canvas>
+        </div>
+    </div>
 
 </body>
+
+<script>
+    $("#submit").on("click", function () {
+        let formData = {
+            startYear: $("#startYear").val(),
+            endYear: $("#endYear").val(),
+            genre1: $("#genre1").val(),
+            genre2: $("#genre2").val(),
+            genre3: $("#genre3").val()
+        };
+        $.post("/api/query5", formData).done(function (data) {
+            let dataSet = data.data;
+            let labels = [];
+            for (let i = formData.startYear; i <= formData.endYear; i++) {
+                labels.push(i);
+            }
+            console.log(dataSet);
+            $("#submit").hide();
+            var ctx = $('#myChart')[0].getContext('2d');
+            var myChart = new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: labels,
+                    datasets: [{
+                        label: `Number of ${formData.genre1} Movies from ${formData.startYear} to ${formData.endYear}`,
+                        data: dataSet[0],
+                        backgroundColor: [
+                            'rgba(255, 0, 0, 0.2)',
+                        ],
+                        borderColor: [
+                            'rgba(255, 0, 0, 1)',
+                        ],
+                        borderWidth: 1
+                    },
+                    {
+                        label: `Number of ${formData.genre1} Movies from ${formData.startYear} to ${formData.endYear}`,
+                        data: dataSet[1],
+                        backgroundColor: [
+                            'rgba(0, 255, 0, 0.2)',
+                        ],
+                        borderColor: [
+                            'rgba(0, 255, 0, 1)',
+                        ],
+                        borderWidth: 1
+                    },
+                    {
+                        label: `Number of ${formData.genre1} Movies from ${formData.startYear} to ${formData.endYear}`,
+                        data: dataSet[2],
+                        backgroundColor: [
+                            'rgba(0, 0, 255, 0.2)',
+                        ],
+                        borderColor: [
+                            'rgba(0, 0, 255, 1)',
+                        ],
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    scales: {
+                        x: {
+                            display: true,
+                            title: {
+                                display: true,
+                                text: 'Number of Movies Released'
+                            }
+                        },
+                        y: {
+                            display: true,
+                            title: {
+                                display: true,
+                                text: 'Year'
+                            }
+                        }
+                    }
+                }
+            });
+        });
+    });
+</script>
 
 </html>

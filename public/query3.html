@@ -16,7 +16,7 @@
         crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
-    <title>Home</title>
+    <title>Query 3</title>
 </head>
 
 <body>
@@ -79,7 +79,6 @@
                     <label for="endYear" class="form-label">End Year</label>
                     <input type="int" class="form-control" id="endYear">
                 </div>
-
                 <button type="button" class="btn btn-primary" id="submit">Submit</button>
             </form>
         </div>
@@ -103,9 +102,9 @@
         $.post("/api/query3", formData).done(function (data) {
             let dataSet = data.data;
             let labels = [];
-            dataSet.forEach((t) => {
-                labels.push(t.x);
-            });
+            for(let i = formData.startYear; i <= formData.endYear; i++){
+                labels.push(i);
+            }
             console.log(dataSet);
             $("#submit").hide();
             var ctx = $('#myChart')[0].getContext('2d');
@@ -114,13 +113,13 @@
                 data: {
                     labels: labels,
                     datasets: [{
-                        label: `AVG Ratings of Movies from ${formData.startYear} to ${formData.endYear}`,
+                        label: `AVG Runtimes of Movies from ${formData.startYear} to ${formData.endYear}`,
                         data: dataSet,
                         backgroundColor: [
-                            'rgba(255, 99, 132, 0.2)',
+                            'rgba(255, 0, 0, 0.2)',
                         ],
                         borderColor: [
-                            'rgba(255, 99, 132, 1)',
+                            'rgba(255, 0, 0, 1)',
                         ],
                         borderWidth: 1
                     }]
@@ -138,7 +137,7 @@
                             display: true,
                             title: {
                                 display: true,
-                                text: 'Average Rating'
+                                text: 'Average Movie Runtime (in Minutes)'
                             }
                         }
                     }

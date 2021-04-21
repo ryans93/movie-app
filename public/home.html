@@ -76,8 +76,7 @@
                     interval of time.</li>
                 <li>Query 2: This query examines averages of movie ratings for a specific actor for each year of that
                     actor's career.</li>
-                <li>Query 3: This query examines averages of movie runtimes for each year within the specified time
-                    interval.</li>
+                <li>Query 3: This query examines averages of movie runtimes for each year within the specified time interval.</li>
                 <li>Query 4: This query examines averages of movie ratings for each run time (in minutes) within the
                     specified time interval.</li>
                 <li>Query 5: This query finds the number of movies released for a specific genre within each year of the
@@ -85,9 +84,20 @@
                 <li>Query 6: This query finds the averages of TV show ratings for each season or individual episode.
                 </li>
             </ol>
+            <button class="btn btn-primary" type="button" id="count">Tuple Count</button>
+            <div id="display"></div>
         </div>
     </div>
 
-</body>
 
+</body>
+<script>
+    $("#count").on("click", function() {
+
+        $.post("/api/total", {}).done(function (data) {
+            console.log(data);
+            $("#display").html("Tuple Count: " + data.data);
+        });
+    })
+    </script>
 </html>

@@ -16,7 +16,7 @@
         crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
-    <title>Home</title>
+    <title>Query 6</title>
 </head>
 
 <body>
@@ -67,7 +67,94 @@
         </div>
     </div>
 
+    <div class="row">
+        <div class="col-2"></div>
+        <div class="col-8">
+            <h2>Query Parameters</h2>
+            <form>
+                <div class="mb-3">
+                    <label for="format" class="form-label">Format</label>
+                    <select id="format" class="form-select">
+                        <option>Episode</option>
+                        <option>Season</option>
+                    </select>
+                </div>
+                <div class="mb-3">
+                    <label for="series" class="form-label">Series</label>
+                    <input type="int" class="form-control" id="series">
+                </div>
+                <div class="mb-3">
+                    <label for="seasonNum" class="form-label">Season Number (for Episode only)</label>
+                    <input type="int" class="form-control" id="seasonNum">
+                </div>
+                
+                <button type="button" class="btn btn-primary" id="submit">Submit</button>
+            </form>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-12">
+            <canvas id="myChart"></canvas>
+        </div>
+    </div>
+
 
 </body>
+
+<script>
+    $("#submit").on("click", function () {
+        let formData = {
+            format: $("#format").val(),
+            season: $("#seasonNum").val(),
+            series: $("#series").val()
+        };
+        $.post("/api/query6", formData).done(function (data) {
+            let dataSet = data.data;
+            let labels = [];
+            dataSet.forEach((t) => {
+                labels.push(t.x);
+            });
+            console.log(dataSet);
+            $("#submit").hide();
+            var ctx = $('#myChart')[0].getContext('2d');
+            var myChart = new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: labels,
+                    datasets: [{
+                        label: `AVG Ratings of Episodes/Seasons from ${formData.series}`,
+                        data: dataSet,
+                        backgroundColor: [
+                            'rgba(255, 99, 132, 0.2)',
+                        ],
+                        borderColor: [
+                            'rgba(255, 99, 132, 1)',
+                        ],
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    scales: {
+                        x: {
+                            display: true,
+                            title: {
+                                display: true,
+                                text: 'Episode/Season Number'
+                            }
+                        },
+                        y: {
+                            display: true,
+                            title: {
+                                display: true,
+                                text: 'AVG rating'
+                            }
+                        }
+                    }
+                }
+            });
+        });
+    });
+</script>
 
 </html>
